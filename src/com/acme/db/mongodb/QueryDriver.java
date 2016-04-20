@@ -24,6 +24,7 @@ public class QueryDriver {
 	MongoCollection<Document> collection;
 	ResourceValidation rv = new ResourceValidation();
 	ArrayList<String> dbList = new ArrayList<String>();
+	ArrayList<String> colList = new ArrayList<String>();
 	boolean check;
 	
 	public void queryAll(){	
@@ -44,15 +45,29 @@ public class QueryDriver {
 		else{
 			System.out.println(dbin + " is valid");
 			System.out.println("You chose " + rv.getDatabaseChoice());
+			//Use inventory database
+			db = mongoClient.getDatabase(rv.getDatabaseChoice());
 			check = true;
 		}
 		}while(!check);
 		
-			
-		//Use inventory database
-			db = mongoClient.getDatabase("inventory");
-		//Use items collection	
-			collection = db.getCollection("items");
+		do{
+		//List all collections from chosen database
+			colList = rv.availableCollections(mongoClient, db, rv.getDatabaseChoice());
+		//prompt for collection number
+			System.out.print("Query Collection #");
+		// get user input
+			String cin = getInput();
+		// validate collection choice
+				if(!rv.collectionValidate(mongoClient, db, rv.getDatabaseChoice(), cin, colList)){
+					System.out.println(cin + " is not a valid choice");
+					check = false;
+				}
+				else{
+					collection = db.getCollection(rv.getCollectionChoice());
+					check = true;
+				}		
+			}while (!check);
 		//Show All Retrieved Docs
 				System.out.println("----[Retrieve all Documents in Collection]----");
 				for (Document doc: collection.find()){

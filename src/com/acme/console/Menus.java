@@ -14,53 +14,54 @@ public class Menus {
 		final String[] editOps = {"1. Edit", "2. Main Menu"};
 		final String[] removeOps = {"1. Remove all", "2. Remove with Contraints", "3. Main Menu"};
 		QueryDriver qd = new QueryDriver();
+		InsertDriver id = new InsertDriver();
 		
-		public void getNextMenu(int menuNum, Menus ops) {
+		public void getNextMenu(int menuNum){
 			switch (menuNum){
 			case 1://provide Query Menu Options
 				System.out.println("You select QUERY menu!");
-				showMenu(ops.queryOps); //show QUERY menu
-				input = getInput(ops.queryOps.length); //get QUERY Menu input
+				showMenu(queryOps); //show QUERY menu
+				input = getInput(queryOps.length); //get QUERY Menu input
 				queryChoice(input); //Execute Query Option
-				while(input!=ops.queryOps.length){
-					if(input==ops.queryOps.length){ //Go back to main menu
-						showMenu(ops.mainOps);
+				while(input!=queryOps.length){
+					if(input==queryOps.length){ //Go back to main menu
+						showMenu(mainOps);
 						break;
 					}
 					else{ //stay on QUERY menu
-						showMenu(ops.queryOps);
-						input = getInput(ops.queryOps.length);
+						showMenu(queryOps);
+						input = getInput(queryOps.length);
 						queryChoice(input);
 					}
 				}
 				break;
 			case 2: 
 				System.out.println("You select ADD menu!");
-				showMenu(ops.addOps); //show ADD menu
-				input = getInput(ops.addOps.length); //get ADD Menu input
+				showMenu(addOps); //show ADD menu
+				input = getInput(addOps.length); //get ADD Menu input
 				addChoice(input); //Execute ADD Option
-				while(input!=ops.addOps.length){
-					if(input==ops.addOps.length){ //Go back to main menu
-						showMenu(ops.mainOps);
+				while(input!=addOps.length){
+					if(input==addOps.length){ //Go back to main menu
+						showMenu(mainOps);
 						break;
 					}
 					else{ //stay on QUERY menu
-						showMenu(ops.addOps);
-						input = getInput(ops.addOps.length);
+						showMenu(addOps);
+						input = getInput(addOps.length);
 						addChoice(input);
 					}
 				}
 				break;
 			case 3:
 				System.out.println("You select EDIT menu!");
-				showMenu(ops.editOps);
-				getInput(ops.editOps.length);
+				showMenu(editOps);
+				getInput(editOps.length);
 				//Handle Selection
 				break;
 			case 4:
 				System.out.println("You select REMOVE menu!");
-				showMenu(ops.removeOps);
-				getInput(ops.removeOps.length);
+				showMenu(removeOps);
+				getInput(removeOps.length);
 				//Handle Selection
 				break;
 			case 5:
@@ -88,6 +89,7 @@ public class Menus {
 			switch (input){
 			case 1:	
 				System.out.println("You chose to ADD Inventory!");
+				id.insertOne();
 				break;
 			case 2:
 				break;

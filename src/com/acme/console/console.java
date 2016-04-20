@@ -14,7 +14,7 @@ public class console {
 			//get user choice
 			input = ops.getInput(ops.mainOps.length);
 			//load next menu
-			ops.getNextMenu(input, ops);
+			ops.getNextMenu(input);
 		}
 		System.out.println("Program Terminated");
 	}

@@ -10,7 +10,7 @@ public class ResourceValidation {
 	
 	ArrayList<String> list = new ArrayList<String>();
 	private String dbChoice;
-	
+	private String collChoice;
 //	public boolean databaseValidate(MongoClient mongoClient, String db){
 //	
 //		
@@ -47,7 +47,33 @@ public boolean databaseValidate(MongoClient mongoClient, String dbNum, ArrayList
 		else{
 			return false;
 		}
+}
 
+public boolean collectionValidate(MongoClient mongoClient, MongoDatabase db, String database, String col, ArrayList<String> colList){
+	mongoClient.getDB(database);
+	MongoIterable<String> cols = db.listCollectionNames();
+	int cNum = Integer.parseInt(col)-1;
+	if (cNum>=0 && cNum<colList.size()){
+		String chosenCol = colList.get(cNum);
+		setCollectionChoice(chosenCol);
+		colList.clear();
+		return true;
+	}
+	else{
+		return false;
+	}
+	
+	
+//	for (String colName : cols){
+//		//System.out.println("Collection name: " + colName);
+//		if (colName.equals(col)){
+//			System.out.println("Collection " + colName + "exists!");
+//			return true;
+//		}
+//	}
+//	System.out.println("Collection " + col + " does NOT exist!");
+//	return false;
+}
 
 //		for (String dbName : dbs){
 //			mongoClient.getDB(dbName);
@@ -62,7 +88,6 @@ public boolean databaseValidate(MongoClient mongoClient, String dbNum, ArrayList
 //			}
 //		
 //	    } 
-	}
 
 	public String getDatabaseChoice(){
 		return dbChoice;
@@ -72,12 +97,21 @@ public boolean databaseValidate(MongoClient mongoClient, String dbNum, ArrayList
 		dbChoice=db;
 	}
 	
+	public String getCollectionChoice(){
+		return collChoice;
+	}
+	
+	private void setCollectionChoice(String col){
+		collChoice = col;
+	}
+	
 	public ArrayList<String> availableDatabases(MongoClient mongoClient){
+		list.clear();
 		//List available databases
 		MongoIterable<String> dbs = mongoClient.listDatabaseNames();
 		int index = 0;
 		for (String dbName : dbs){
-			mongoClient.getDB(dbName);
+			//mongoClient.getDB(dbName);
 			list.add(index, dbName);
 			System.out.printf("\t%-10s\n", index+1 +". " + list.get(index));
 			index++;
@@ -85,30 +119,18 @@ public boolean databaseValidate(MongoClient mongoClient, String dbNum, ArrayList
 			return list;
 	}
 	
-	public void availableCollections(MongoClient mongoClient, MongoDatabase db, String database){
+	public ArrayList<String> availableCollections(MongoClient mongoClient, MongoDatabase db, String database){
+		list.clear();
 		MongoIterable<String> c = db.listCollectionNames();
 		int cindex = 0;
 		for (String cName : c){
-			mongoClient.getDB(database);
+			//mongoClient.getDB(database);
 			list.add(cindex, cName);
 			System.out.printf("\t%-10s\n", cindex+1 +". " + list.get(cindex));
 			cindex++;
 		}
+		return list;
 	}
-		
-	public boolean collectionValidate(MongoClient mongoClient, MongoDatabase db, String database, String col){
-		mongoClient.getDB(database);
-		MongoIterable<String> cols = db.listCollectionNames();
-		
-		for (String colName : cols){
-			//System.out.println("Collection name: " + colName);
-			if (colName.equals(col)){
-				System.out.println("Collection " + colName + "exists!");
-				return true;
-			}
-		}
-		System.out.println("Collection " + col + " does NOT exist!");
-		return false;
-	}
+	
 	
 }
