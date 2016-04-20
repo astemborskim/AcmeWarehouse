@@ -19,14 +19,36 @@ public class QueryDriver {
 	String qcol;
 	String qname;
 	String qvalue;
-	MongoClient mongoClient = null;
-	MongoDatabase db = null;
-	MongoCollection<Document> collection = null;;;
-	ArrayList<String> list = new ArrayList<String>();
+	MongoClient mongoClient;;
+	MongoDatabase db;
+	MongoCollection<Document> collection;
+	ResourceValidation rv = new ResourceValidation();
+	ArrayList<String> dbList = new ArrayList<String>();
+	boolean check;
 	
-	public void queryAll(){
-		//Connection
+	public void queryAll(){	
+		//Connect	
 			mongoClient = MongoConnect.connectme();
+		//Get available databases	
+			dbList = rv.availableDatabases(mongoClient);
+		do{
+		//Prompt user to pick a database
+			System.out.print("Query Database #");
+		//get user input
+			String dbin = getInput();
+		//validate input
+		if(!rv.databaseValidate(mongoClient, dbin, dbList)){
+				System.out.println(dbin + " is not a valid input!");
+				check = false;
+			}
+		else{
+			System.out.println(dbin + " is valid");
+			System.out.println("You chose " + rv.getDatabaseChoice());
+			check = true;
+		}
+		}while(!check);
+		
+			
 		//Use inventory database
 			db = mongoClient.getDatabase("inventory");
 		//Use items collection	
@@ -50,66 +72,34 @@ public class QueryDriver {
 			System.out.println("----[Retrieve Documents from " + "qdb" + " in collection " + "qcol:" + " ]----");
 			System.out.println("Available Databases:");
 			
-		//List available databases
-			MongoIterable<String> dbs = mongoClient.listDatabaseNames();
-			int index = 0;
-			for (String dbName : dbs){
-				mongoClient.getDB(dbName);
-				list.add(index, dbName);
-				System.out.printf("\t%-10s\n", index+1 +". " + list.get(index));
-				index++;
-			}
+//		//List available databases
+			rv.availableDatabases(mongoClient);
 			
 			System.out.print("Database #: ");
 			qdb = getInput();
-			//Check if DB is valid
-			if (dbValidate(qdb)){
-				System.out.print("Collection: ");
-				qcol = getInput();
-				//check if collection is valid
-				if (colValidate(qdb, qcol)){
-					System.out.print("Document Field: ");
-					qname = getInput();
-					System.out.print("Field Value:: ");
-					qvalue = getInput();
-					for (Document doc: collection.find()){
-						System.out.println(doc.toJson());
-					}
-				}
-			}
+			
+//			//Check if DB is valid
+//			if (rv.databaseValidate(mongoClient, qdb)){
+//				//List available collections
+//				rv.availableCollections(mongoClient, db, qdb);
+//
+//				
+//				System.out.print("Collection: ");
+//				qcol = getInput();
+//				//check if collection is valid
+//				if (rv.collectionValidate(mongoClient, db , qdb, qcol)){
+//					System.out.print("Document Field: ");
+//					qname = getInput();
+//					System.out.print("Field Value:: ");
+//					qvalue = getInput();
+//					for (Document doc: collection.find(new Document (qname, qvalue))){
+//						System.out.println(doc.toJson());
+//					}
+//				}
+//			}
 			mongoClient.close();
 	}
-	
-	public boolean dbValidate(String db){
-		MongoIterable<String> dbs = mongoClient.listDatabaseNames();
-	    
-		for (String dbName : dbs){
-			mongoClient.getDB(dbName);
-			System.out.println("Database Name: " + dbName);
-		
-		//MongoCursor<String> dbsCursor = mongoClient.listDatabaseNames().iterator();
-			if(dbName.equals(db)) {
-				System.out.println("Database " + dbName + " exists!");
-	        	return true;
-	    	}
-			else {
-				System.out.println(db + " does not exist!");
-				return false;
-			}
-	    } 
-		return false;
-}
-	
-	public boolean colValidate(String database, String col){
-		mongoClient.getDB(database);
-		MongoIterable<String> cols = db.listCollectionNames();
-		
-		for (String colName : cols){
-			System.out.println("Collection name: " + colName);
-		}
-		
-		return false;
-	}
+
 	public String getInput(){
 		String s=null;
 		try {
