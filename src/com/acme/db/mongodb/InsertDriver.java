@@ -21,8 +21,6 @@ MongoDatabase db;
 
 public void insert(){
 
-		System.out.println("I AM THE INSERTE DRIVER ... you called insert()");
-	
 	try {
 		//connect to local mongoDB
 			mongoClient = MongoConnect.connectme();
@@ -65,27 +63,23 @@ public void insert(){
 							check = true;
 						}		
 				}while (!check);
-				
-			
-			db = mongoClient.getDatabase(rvInsert.getDatabaseChoice());//Use inventory database
-			collection = db.getCollection(rvInsert.getCollectionChoice());
-			
+		
 	} catch (Exception e1) {
 			e1.printStackTrace();
 	}
 	
 	try{	 
 	//insert in to collection
-		System.out.println("Inserting " + "dbName" + " into " + "collection");
+		System.out.println("Inserting " + db + " into " + collection);
 		Document doc = new Document();
 		doc.put("item_number", "4564");
 		doc.put("type", "Furniture");
 		doc.put("name", "Leather Desk Chair");
 		doc.put("Color", "Black");
 		System.out.println("ITEM: " + doc.toJson());
-		collection.insertOne(doc);
+		//collection.insertOne(doc);
 	}catch (Exception e){
-	System.err.println(e.getClass().getName() + " :" + e.getMessage());
+		System.err.println(e.getClass().getName() + " :" + e.getMessage());
 	}
 	finally{
 		mongoClient.close();
