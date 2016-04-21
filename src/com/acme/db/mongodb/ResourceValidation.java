@@ -1,5 +1,8 @@
 package com.acme.db.mongodb;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 import com.mongodb.MongoClient;
@@ -130,6 +133,21 @@ public boolean collectionValidate(MongoClient mongoClient, MongoDatabase db, Str
 			cindex++;
 		}
 		return list;
+	}
+	
+	public String getInput(){
+		String s=null;
+		try {
+			BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+			s = br.readLine();
+		} catch (NumberFormatException e) {
+			System.out.println(e.getMessage());
+			//e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+			System.out.println(e.getMessage());
+		}
+		return s;
 	}
 	
 	

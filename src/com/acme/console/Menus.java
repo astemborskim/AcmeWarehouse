@@ -89,7 +89,7 @@ public class Menus {
 			switch (input){
 			case 1:	
 				System.out.println("You chose to ADD Inventory!");
-				id.insertOne();
+				id.insert();
 				break;
 			case 2:
 				break;

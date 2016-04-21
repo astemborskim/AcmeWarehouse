@@ -8,17 +8,23 @@ import com.mongodb.client.MongoDatabase;
 
 public class InsertDriver{
 
-	public void insertOne(){
+	public void insert(){
 	
-	//String databaseName = dBName;
-	//String collectionName = collName;
+	ResourceValidation rvInsert = new ResourceValidation();
+		
 	MongoClient mongoClient = null;
 	//Use items collection	
 	MongoCollection<Document> collection = null;
 	
 	try {
-		//connect to local mongoDB.. attach to 'datbaseName' and open 'collectionName'
+		//connect to local mongoDB
 			mongoClient = MongoConnect.connectme();
+		//get and display available databases
+			rvInsert.availableDatabases(mongoClient);
+					
+		//get user database choice
+			rvInsert.getDatabaseChoice();
+			
 			MongoDatabase db = mongoClient.getDatabase("backstock");//Use inventory database
 			collection = db.getCollection("misc");
 	} catch (Exception e1) {
