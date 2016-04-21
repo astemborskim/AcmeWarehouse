@@ -45,7 +45,7 @@ public class Menus {
 						showMenu(mainOps);
 						break;
 					}
-					else{ //stay on QUERY menu
+					else{ //show ADD menu
 						showMenu(addOps);
 						input = getInput(addOps.length);
 						addChoice(input);

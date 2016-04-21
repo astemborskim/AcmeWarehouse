@@ -14,28 +14,7 @@ public class ResourceValidation {
 	ArrayList<String> list = new ArrayList<String>();
 	private String dbChoice;
 	private String collChoice;
-//	public boolean databaseValidate(MongoClient mongoClient, String db){
-//	
-//		
-//		MongoIterable<String> dbs = mongoClient.listDatabaseNames();
-//	    
-//		for (String dbName : dbs){
-//			mongoClient.getDB(dbName);
-//			System.out.println("Database Name: " + dbName);
-//		if(dbName.equals(db)) {
-//				System.out.println("Database " + dbName + " exists!");
-//				return true;
-//	        		    	}
-//			else {
-//				System.out.println(db + " does not exist!");
-//				return false;
-//			}
-//		
-//	    } 
-//		mongoClient.close();
-//		return false;
-//	}
-	
+
 public boolean databaseValidate(MongoClient mongoClient, String dbNum, ArrayList<String> dbList){
 		System.out.println("dbList size is " + dbList.size());
 		int dbN = Integer.parseInt(dbNum)-1;
@@ -65,32 +44,7 @@ public boolean collectionValidate(MongoClient mongoClient, MongoDatabase db, Str
 	else{
 		return false;
 	}
-	
-	
-//	for (String colName : cols){
-//		//System.out.println("Collection name: " + colName);
-//		if (colName.equals(col)){
-//			System.out.println("Collection " + colName + "exists!");
-//			return true;
-//		}
-//	}
-//	System.out.println("Collection " + col + " does NOT exist!");
-//	return false;
 }
-
-//		for (String dbName : dbs){
-//			mongoClient.getDB(dbName);
-//			System.out.println("Database Name: " + dbName);
-//		if(dbName.equals(db)) {
-//				System.out.println("Database " + dbName + " exists!");
-//				return true;
-//	        		    	}
-//			else {
-//				System.out.println(db + " does not exist!");
-//				return false;
-//			}
-//		
-//	    } 
 
 	public String getDatabaseChoice(){
 		return dbChoice;
@@ -149,6 +103,52 @@ public boolean collectionValidate(MongoClient mongoClient, MongoDatabase db, Str
 		}
 		return s;
 	}
+//	public boolean databaseValidate(MongoClient mongoClient, String db){
+//	
+//		
+//		MongoIterable<String> dbs = mongoClient.listDatabaseNames();
+//	    
+//		for (String dbName : dbs){
+//			mongoClient.getDB(dbName);
+//			System.out.println("Database Name: " + dbName);
+//		if(dbName.equals(db)) {
+//				System.out.println("Database " + dbName + " exists!");
+//				return true;
+//	        		    	}
+//			else {
+//				System.out.println(db + " does not exist!");
+//				return false;
+//			}
+//		
+//	    } 
+//		mongoClient.close();
+//		return false;
+//	}
+
 	
+	
+//	for (String dbName : dbs){
+//	mongoClient.getDB(dbName);
+//	System.out.println("Database Name: " + dbName);
+//if(dbName.equals(db)) {
+//		System.out.println("Database " + dbName + " exists!");
+//		return true;
+//    		    	}
+//	else {
+//		System.out.println(db + " does not exist!");
+//		return false;
+//	}
+//
+//} 
+	
+//	for (String colName : cols){
+//	//System.out.println("Collection name: " + colName);
+//	if (colName.equals(col)){
+//		System.out.println("Collection " + colName + "exists!");
+//		return true;
+//	}
+//}
+//System.out.println("Collection " + col + " does NOT exist!");
+//return false;	
 	
 }

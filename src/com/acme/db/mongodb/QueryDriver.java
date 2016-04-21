@@ -1,20 +1,13 @@
 package com.acme.db.mongodb;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
-
 import org.bson.Document;
-
 import com.mongodb.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 
 public class QueryDriver {
 
-	String qdb;
-	String qcol;
 	String qname;
 	String qvalue;
 	MongoClient mongoClient;;
@@ -29,7 +22,7 @@ public class QueryDriver {
 		//Connect	
 			mongoClient = MongoConnect.connectme();
 		//Get and display available databases	
-			dbList = rvQuery.availableDatabases(mongoClient);
+			dbList = rvQuery.availableDatabases(mongoClient); 
 		do{
 			//Prompt user to pick a database
 				System.out.print("Query Database #");
@@ -85,13 +78,7 @@ public class QueryDriver {
 			mongoClient.close();
 	}
 	
-//	public void generateKeyList(){ //Right now this prints out the document. not the keys
-//		List<Document> keys = db.getCollection("items").find().into(new ArrayList<Document>());
-//		for (Document key : keys){
-//			System.out.println(key);
-//		}
-//	}
-	
+
 	public void queryConstrained(String dbName, String colName){
 			System.out.println("----[Retrieve Documents from " + dbName + " in collection " + colName + ":" + " ]----");
 				System.out.print("Document Key: ");
@@ -103,5 +90,11 @@ public class QueryDriver {
 				}
 			mongoClient.close();
 	}
-
+	
+//	public void generateKeyList(){ //Right now this prints out the document. not the keys
+//		List<Document> keys = db.getCollection("items").find().into(new ArrayList<Document>());
+//		for (Document key : keys){
+//			System.out.println(key);
+//		}
+//	}
 }
