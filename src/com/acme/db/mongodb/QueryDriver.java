@@ -5,15 +5,11 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
-import org.apache.hadoop.mapred.*;
 import org.bson.Document;
 
-import com.mongodb.DB;
-import com.mongodb.DBCollection;
 import com.mongodb.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
-import com.mongodb.client.MongoIterable;
 
 public class QueryDriver {
 
@@ -47,7 +43,7 @@ public class QueryDriver {
 			else{
 				System.out.println(dbin + " is valid");
 				System.out.println("You chose " + rv.getDatabaseChoice());
-			//Use inventory database
+			//Use chosen database
 				db = mongoClient.getDatabase(rv.getDatabaseChoice());
 				check = true;
 			}
@@ -89,9 +85,12 @@ public class QueryDriver {
 			mongoClient.close();
 	}
 	
-	public void generateKeyList(){
-		//db.getCollection("items").mapReduce(mapFunction, reduceFunction).filter(queryFilter);
-	}
+//	public void generateKeyList(){ //Right now this prints out the document. not the keys
+//		List<Document> keys = db.getCollection("items").find().into(new ArrayList<Document>());
+//		for (Document key : keys){
+//			System.out.println(key);
+//		}
+//	}
 	
 	public void queryConstrained(String dbName, String colName){
 			System.out.println("----[Retrieve Documents from " + dbName + " in collection " + colName + ":" + " ]----");
