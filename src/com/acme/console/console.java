@@ -12,9 +12,9 @@ public class console {
 		while(input!=ops.mainOps.length){
 			ops.showMenu(ops.mainOps);
 			//get user choice
-			input = ops.getInput(ops.mainOps.length);
+			input = ops.getInput(ops.mainOps.length); //call getInput with size of main menu array
 			//load next menu
-			ops.getNextMenu(input);
+			ops.getNextMenu(input); //load menu corresponding to user input
 		}
 		System.out.println("Program Terminated");
 	}

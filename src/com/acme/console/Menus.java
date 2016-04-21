@@ -72,13 +72,13 @@ public class Menus {
 
 		public void queryChoice(int input){
 			switch (input){
-			case 1:	
+			case 1: //QUERY ALL in a collection	
 				System.out.println("You chose to QUERY ALL");
-				qd.queryAll();
+				qd.query(input);
 				break;
 			case 2:
 				System.out.println("You chose to QUERY WITH CONTSTRAINTS");
-				qd.queryConstrained();
+				qd.query(input);
 				break;
 			case 3:
 				break;

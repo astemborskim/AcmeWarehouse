@@ -3,5 +3,6 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="C:/Users/matthew.astemborski/Desktop/Eclispe/External JARs/mongo-java-driver-3.2.0-rc0.jar"/>
+	<classpathentry kind="lib" path="C:/Users/matthew.astemborski/Desktop/Eclispe/External JARs/hadoop-core-0.20.2.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
