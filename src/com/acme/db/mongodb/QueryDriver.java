@@ -1,7 +1,11 @@
 package com.acme.db.mongodb;
 
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Map;
+
 import org.bson.Document;
+
 import com.mongodb.MongoClient;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
@@ -66,8 +70,11 @@ public class QueryDriver {
 			//Show All Retrieved Doc in specified collection
 				System.out.println("----[Retrieve all Documents in Collection]----");
 				for (Document doc: collection.find()){
-					System.out.println(doc.toJson());
-				}
+					System.out.println(doc.toJson()); //Json result
+					//System.out.println(doc.get("type")); //retrieve type value
+					//System.out.println(doc.get("item_number"));
+					
+									}
 				break;
 		case 2:
 			//Constraint to field input

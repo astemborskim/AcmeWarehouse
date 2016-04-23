@@ -9,7 +9,7 @@ public class Menus {
 		int input;
 		
 		final String[] mainOps = {"1. Query", "2. Add", "3. Edit", "4. Remove", "5. Quit"};
-		final String[] queryOps = {"1. Query All", "2. Query with Constraints", " 3. Main Menu"};
+		final String[] queryOps = {"1. Query All", "2. Query with Constraints", "3. Main Menu"};
 		final String[] addOps = {"1. Add One", "2. Export CSV" ,"3. Main Menu"};
 		final String[] editOps = {"1. Edit", "2. Main Menu"};
 		final String[] removeOps = {"1. Remove all", "2. Remove with Contraints", "3. Main Menu"};
