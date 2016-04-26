@@ -1,15 +1,17 @@
 package com.acme.console;
 
 import java.io.BufferedReader;
+import java.io.Console;
 import java.io.IOException;
 import java.io.InputStreamReader;
+
 import com.acme.db.mongodb.*;
 
 public class Menus {
 		int input;
 		
 		final String[] mainOps = {"1. Query", "2. Add", "3. Edit", "4. Remove", "5. Quit"};
-		final String[] queryOps = {"1. Query All", "2. Query with Constraints", " 3. Main Menu"};
+		final String[] queryOps = {"1. Query All", "2. Query with Constraints", "3. Main Menu"};
 		final String[] addOps = {"1. Add One", "2. Export CSV" ,"3. Main Menu"};
 		final String[] editOps = {"1. Edit", "2. Main Menu"};
 		final String[] removeOps = {"1. Remove all", "2. Remove with Contraints", "3. Main Menu"};
@@ -45,7 +47,7 @@ public class Menus {
 						showMenu(mainOps);
 						break;
 					}
-					else{ //stay on QUERY menu
+					else{ //show ADD menu
 						showMenu(addOps);
 						input = getInput(addOps.length);
 						addChoice(input);
@@ -89,7 +91,7 @@ public class Menus {
 			switch (input){
 			case 1:	
 				System.out.println("You chose to ADD Inventory!");
-				id.insertOne();
+				id.insert();
 				break;
 			case 2:
 				break;
@@ -99,12 +101,13 @@ public class Menus {
 		}
 		
 		public void showMenu(String[] o){
+			clearScreen();
 			System.out.println("Select from the following Options:");
 			for (int i =0; i<o.length; i++){
 				System.out.printf("\t%-10s\n", o[i]);
 			}
 		}
-		
+		//Called by console (validates menu navigation)
 		public int getInput(int menuSize){
 			try {
 				BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -131,5 +134,10 @@ public class Menus {
 			return false;
 		}
 		return true;
-	}
+		}
+		
+		public void clearScreen(){
+
+		}
+		
 }

@@ -1,8 +1,5 @@
 package com.acme.db.mongodb;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 import org.bson.Document;
@@ -13,14 +10,12 @@ import com.mongodb.client.MongoDatabase;
 
 public class QueryDriver {
 
-	String qdb;
-	String qcol;
 	String qname;
 	String qvalue;
 	MongoClient mongoClient;;
 	MongoDatabase db;
 	MongoCollection<Document> collection;
-	ResourceValidation rv = new ResourceValidation();
+	ResourceValidation rvQuery = new ResourceValidation();
 	ArrayList<String> dbList = new ArrayList<String>();
 	ArrayList<String> colList = new ArrayList<String>();
 	boolean check;
@@ -28,41 +23,41 @@ public class QueryDriver {
 	public void query(int input){	
 		//Connect	
 			mongoClient = MongoConnect.connectme();
-		//Get available databases	
-			dbList = rv.availableDatabases(mongoClient);
+		//Get and display available databases	
+			dbList = rvQuery.availableDatabases(mongoClient); 
 		do{
 			//Prompt user to pick a database
 				System.out.print("Query Database #");
 			//get user input
-				String dbin = getInput();
+				String dbin = rvQuery.getInput();
 			//validate input
-			if(!rv.databaseValidate(mongoClient, dbin, dbList)){
+			if(!rvQuery.databaseValidate(mongoClient, dbin, dbList)){
 					System.out.println(dbin + " is not a valid input!");
 					check = false;
 				}
 			else{
-				System.out.println(dbin + " is valid");
-				System.out.println("You chose " + rv.getDatabaseChoice());
-			//Use chosen database
-				db = mongoClient.getDatabase(rv.getDatabaseChoice());
+				//System.out.println(dbin + " is valid");
+				//System.out.println("You chose " + rvQuery.getDatabaseChoice());
+			//set chosen database
+				db = mongoClient.getDatabase(rvQuery.getDatabaseChoice());
 				check = true;
 			}
 		}while(!check);
 		
 		do{
 			//List all collections from chosen database
-				colList = rv.availableCollections(mongoClient, db, rv.getDatabaseChoice());
+				colList = rvQuery.availableCollections(mongoClient, db, rvQuery.getDatabaseChoice());
 			//prompt for collection number
 				System.out.print("Query Collection #");
 			// get user input
-				String cin = getInput();
+				String cin = rvQuery.getInput();
 			// validate collection choice
-					if(!rv.collectionValidate(mongoClient, db, rv.getDatabaseChoice(), cin, colList)){
+					if(!rvQuery.collectionValidate(mongoClient, db, rvQuery.getDatabaseChoice(), cin, colList)){
 						System.out.println(cin + " is not a valid choice");
 						check = false;
 					}
 					else{
-						collection = db.getCollection(rv.getCollectionChoice());
+						collection = db.getCollection(rvQuery.getCollectionChoice());
 						check = true;
 					}		
 			}while (!check);
@@ -73,15 +68,31 @@ public class QueryDriver {
 			//Show All Retrieved Doc in specified collection
 				System.out.println("----[Retrieve all Documents in Collection]----");
 				for (Document doc: collection.find()){
-					System.out.println(doc.toJson());
-				}
+					System.out.println(doc.toJson()); //Json result
+					//System.out.println(doc.get("type")); //retrieve type value
+					//System.out.println(doc.get("item_number"));
+					
+									}
 				break;
 		case 2:
 			//Constraint to field input
-				queryConstrained(rv.getDatabaseChoice(), rv.getCollectionChoice());
+				queryConstrained(rvQuery.getDatabaseChoice(), rvQuery.getCollectionChoice());
 				break;
 		}
 		
+			mongoClient.close();
+	}
+	
+
+	public void queryConstrained(String dbName, String colName){
+			System.out.println("----[Retrieve Documents from " + dbName + " in collection " + colName + ":" + " ]----");
+				System.out.print("Document Key: ");
+				qname = rvQuery.getInput();
+				System.out.print("Document Value: ");
+				qvalue = rvQuery.getInput();
+				for (Document doc: collection.find(new Document (qname, qvalue))){
+					System.out.println(doc.toJson());
+				}
 			mongoClient.close();
 	}
 	
@@ -91,31 +102,4 @@ public class QueryDriver {
 //			System.out.println(key);
 //		}
 //	}
-	
-	public void queryConstrained(String dbName, String colName){
-			System.out.println("----[Retrieve Documents from " + dbName + " in collection " + colName + ":" + " ]----");
-				System.out.print("Document Key: ");
-				qname = getInput();
-				System.out.print("Document Value: ");
-				qvalue = getInput();
-				for (Document doc: collection.find(new Document (qname, qvalue))){
-					System.out.println(doc.toJson());
-				}
-			mongoClient.close();
-	}
-
-	public String getInput(){
-		String s=null;
-		try {
-			BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-			s = br.readLine();
-		} catch (NumberFormatException e) {
-			System.out.println(e.getMessage());
-			//e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-			System.out.println(e.getMessage());
-		}
-		return s;
-	}
 }
