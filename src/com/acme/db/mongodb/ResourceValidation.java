@@ -25,33 +25,45 @@ public class ResourceValidation {
 	private DBCursor curs;
 	
 public boolean databaseValidate(MongoClient mongoClient, String dbNum, ArrayList<String> dbList){
-		//System.out.println("dbList size is " + dbList.size());
-		int dbN = Integer.parseInt(dbNum)-1;
-		//System.out.println("dbN = " + dbN);
-		if (dbN>=0 && dbN<dbList.size()){
-			String choosenDB = dbList.get(dbN);
-			//System.out.println("You chose " + choosenDB);
-			setDatabaseChoice(choosenDB);
-			dbList.clear();
-			return true;
-		}
-		else{
+		try {
+			//System.out.println("dbList size is " + dbList.size());
+			int dbN = Integer.parseInt(dbNum)-1;
+			//System.out.println("dbN = " + dbN);
+			if (dbN>=0 && dbN<dbList.size()){
+				String choosenDB = dbList.get(dbN);
+				//System.out.println("You chose " + choosenDB);
+				setDatabaseChoice(choosenDB);
+				dbList.clear();
+				return true;
+			}
+			else{
+				return false;
+			}
+		} catch (NumberFormatException e) {
+			System.out.println("Please enter a valid menu number!");
+			//e.printStackTrace();
 			return false;
 		}
 }
 
 public boolean collectionValidate(MongoClient mongoClient, MongoDatabase db, String database, String col, ArrayList<String> colList){
-	mongoClient.getDB(database);
-	MongoIterable<String> cols = db.listCollectionNames();
-	int cNum = Integer.parseInt(col)-1;
-	if (cNum>=0 && cNum<colList.size()){
-		String chosenCol = colList.get(cNum);
-		setCollectionChoice(chosenCol);
-		colList.clear();
-		return true;
-	}
-	else{
+	try {
+		mongoClient.getDB(database);
+		MongoIterable<String> cols = db.listCollectionNames();
+		int cNum = Integer.parseInt(col)-1;
+		if (cNum>=0 && cNum<colList.size()){
+			String chosenCol = colList.get(cNum);
+			setCollectionChoice(chosenCol);
+			colList.clear();
+			return true;
+		}
+		else{
+			return false;
+		}
+	} catch (NumberFormatException e) {
+		System.out.println("Please enter a valid menu number!");
 		return false;
+		//e.printStackTrace();
 	}
 }
 
@@ -112,34 +124,40 @@ public boolean collectionValidate(MongoClient mongoClient, MongoDatabase db, Str
 		}
 		return s;
 	}
-	
-	public void getInventoryTypes(MongoClient mongoClient){
-		System.out.println("I'm in getInventoryType()");
+	//List valid inventory that can be added and return the menu size to the calling class
+	public int getInventoryTypes(MongoClient mongoClient){
 		MongoDatabase db = mongoClient.getDatabase("serverPersistant");
-		MongoCollection<Document> mc = db.getCollection("inventoryType");
-	
-		
-		for(Document doc : mc.find()){
-			Double sz = (Double) doc.get("size")+1;
-			int size = sz.intValue();
-			System.out.println(size);
-			
+		MongoCollection<Document> invType = db.getCollection("inventoryType");
+		int size=0;
+		//get document containing valid inventory types and size of document options
+		for(Document doc : invType.find()){ 
+			Double sz = (Double) doc.get("size"); //size of the document (# of keys)
+			size = sz.intValue(); //convert to integer
+			//Print each inventory type
 			for(int i = 1; i <= size; i++){
 				String index = "" + i;
 				System.out.printf("\t%-10s\n", index + ". " + doc.get(index));
 			}
+			
 		}
-			
+		return size;
+	}
+	
+	public boolean validateInvType(String invNum, int menuSize){
 		
-			
-//		{
-//			String index = index.toString();
-//			//System.out.println(index);
-//			System.out.println(index + ". " + doc.get(index));
-//			index++;
-//		}
-		
-}
+		try {
+			int choice = Integer.parseInt(invNum);
+			if(choice >= 0 && choice <= menuSize){
+				return true;
+			}
+		} catch (NumberFormatException e) {
+			// TODO Auto-generated catch block
+			System.out.println("Not a valid choice... must be integer!");
+			//e.printStackTrace();
+			return false;
+		}
+		return false;
+	}
 //	public boolean databaseValidate(MongoClient mongoClient, String db){
 //	
 //		

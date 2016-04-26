@@ -1,8 +1,10 @@
 package com.acme.console;
 
 import java.io.BufferedReader;
+import java.io.Console;
 import java.io.IOException;
 import java.io.InputStreamReader;
+
 import com.acme.db.mongodb.*;
 
 public class Menus {
@@ -99,12 +101,13 @@ public class Menus {
 		}
 		
 		public void showMenu(String[] o){
+			clearScreen();
 			System.out.println("Select from the following Options:");
 			for (int i =0; i<o.length; i++){
 				System.out.printf("\t%-10s\n", o[i]);
 			}
 		}
-		
+		//Called by console (validates menu navigation)
 		public int getInput(int menuSize){
 			try {
 				BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -131,5 +134,10 @@ public class Menus {
 			return false;
 		}
 		return true;
-	}
+		}
+		
+		public void clearScreen(){
+
+		}
+		
 }

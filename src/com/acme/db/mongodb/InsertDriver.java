@@ -66,12 +66,32 @@ public void insert(){
 						}		
 				}while (!check);
 		
+			
+			boolean valid;
+			do{			
+				System.out.println("What type of inventory would you like to add?:");
+				int menuSize = rvInsert.getInventoryTypes(mongoClient);
+				System.out.printf("\t%-20s\n", "0. Exit"); // give an option to exit from inventory menu
+				String input = rvInsert.getInput();
+				valid = rvInsert.validateInvType(input, menuSize);
+				
+			}while(!valid);
+			
+			if(valid){
+				System.out.println("Call for the proper inventory insert model");
+			}
+				
+			
 	} catch (Exception e1) {
 			e1.printStackTrace();
+	}	
+	
+	
+
 	}
 	
-	System.out.println("What type of inventory would you like to add?:");
-	rvInsert.getInventoryTypes(mongoClient);
+	
+	
 	
 //	try{	 
 //	//insert in to collection
@@ -101,5 +121,5 @@ public void insert(){
 //	finally{
 //		mongoClient.close();
 //	}
-	}
+	
 }
