@@ -1,6 +1,7 @@
 package com.acme.db.mongodb;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.bson.Document;
 
@@ -12,6 +13,7 @@ public class InsertDriver{
 	
 ArrayList<String> dbList = new ArrayList<String>();
 ArrayList<String> colList = new ArrayList<String>();
+ArrayList<String> invType = new ArrayList<String>(); // this will be a database table to persist and be managed
 boolean check;
 ResourceValidation rvInsert = new ResourceValidation();
 
@@ -20,7 +22,7 @@ MongoCollection<Document> collection; //= null;
 MongoDatabase db;
 
 public void insert(){
-
+	
 	try {
 		//connect to local mongoDB
 			mongoClient = MongoConnect.connectme();
@@ -29,7 +31,7 @@ public void insert(){
 					
 			do{
 				//Prompt user to pick a database
-					System.out.print("Query Database #");
+					System.out.print("Insert to Database #");
 				//get user input
 					String dbin = rvInsert.getInput();
 				//validate input
@@ -38,8 +40,8 @@ public void insert(){
 						check = false;
 					}
 				else{
-					System.out.println(dbin + " is valid");
-					System.out.println("You chose " + rvInsert.getDatabaseChoice());
+					//System.out.println(dbin + " is valid");
+					//System.out.println("You chose " + rvInsert.getDatabaseChoice());
 				//Use chosen database
 					db = mongoClient.getDatabase(rvInsert.getDatabaseChoice());
 					check = true;
@@ -68,28 +70,36 @@ public void insert(){
 			e1.printStackTrace();
 	}
 	
-	try{	 
-	//insert in to collection
-		System.out.println("Inserting " + db + " into " + collection);
-		Document doc = new Document("info",
-					new Document()
-						.append("artist", "Weezer")
-						.append("album", "White Album")
-						.append("year", "2016"))
-					.append("item_num", "12345")
-					.append("format", "digital");
-//		doc.put("item_number", "4564");
-//		doc.put("type", "Furniture");
-//		doc.put("name", "Leather Desk Chair");
-//		doc.put("Color", "Black");
-			
-		System.out.println("ITEM: " + doc.toJson());
-		//collection.insertOne(doc);
-	}catch (Exception e){
-		System.err.println(e.getClass().getName() + " :" + e.getMessage());
-	}
-	finally{
-		mongoClient.close();
-	}
+	System.out.println("What type of inventory would you like to add?:");
+	rvInsert.getInventoryTypes(mongoClient);
+	
+//	try{	 
+//	//insert in to collection
+//		System.out.println("Inserting " + rvInsert.getCollectionChoice() + " into " + rvInsert.getDatabaseChoice());
+//		Document doc = new Document()
+//				.append("item_num", "12345")
+//				.append("type", "Music")
+//				.append("format", "digital")
+//				.append("quantity", "9034")
+//				.append("info", (new Document()
+//						.append("artist", "Weezer")
+//						.append("album", "White Album")
+//						.append("year", "2016")
+//						.append("genre", "Alternative")));
+//
+////Alternative put method to insert
+////		doc.put("item_number", "4564");
+////		doc.put("type", "Furniture");
+////		doc.put("name", "Leather Desk Chair");
+////		doc.put("Color", "Black");
+//			
+//		System.out.println("ITEM: " + doc.toJson());
+//		//collection.insertOne(doc);
+//	}catch (Exception e){
+//		System.err.println(e.getClass().getName() + " :" + e.getMessage());
+//	}
+//	finally{
+//		mongoClient.close();
+//	}
 	}
 }

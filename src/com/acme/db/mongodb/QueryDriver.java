@@ -1,8 +1,6 @@
 package com.acme.db.mongodb;
 
 import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.Map;
 
 import org.bson.Document;
 
@@ -38,9 +36,9 @@ public class QueryDriver {
 					check = false;
 				}
 			else{
-				System.out.println(dbin + " is valid");
-				System.out.println("You chose " + rvQuery.getDatabaseChoice());
-			//Use chosen database
+				//System.out.println(dbin + " is valid");
+				//System.out.println("You chose " + rvQuery.getDatabaseChoice());
+			//set chosen database
 				db = mongoClient.getDatabase(rvQuery.getDatabaseChoice());
 				check = true;
 			}

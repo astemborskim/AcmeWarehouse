@@ -5,7 +5,15 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
+import org.bson.Document;
+
+import com.mongodb.Block;
+import com.mongodb.DBCollection;
+import com.mongodb.DBCursor;
+import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
+import com.mongodb.client.FindIterable;
+import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.MongoIterable;
 
@@ -14,11 +22,12 @@ public class ResourceValidation {
 	ArrayList<String> list = new ArrayList<String>();
 	private String dbChoice;
 	private String collChoice;
-
+	private DBCursor curs;
+	
 public boolean databaseValidate(MongoClient mongoClient, String dbNum, ArrayList<String> dbList){
-		System.out.println("dbList size is " + dbList.size());
+		//System.out.println("dbList size is " + dbList.size());
 		int dbN = Integer.parseInt(dbNum)-1;
-		System.out.println("dbN = " + dbN);
+		//System.out.println("dbN = " + dbN);
 		if (dbN>=0 && dbN<dbList.size()){
 			String choosenDB = dbList.get(dbN);
 			//System.out.println("You chose " + choosenDB);
@@ -103,6 +112,34 @@ public boolean collectionValidate(MongoClient mongoClient, MongoDatabase db, Str
 		}
 		return s;
 	}
+	
+	public void getInventoryTypes(MongoClient mongoClient){
+		System.out.println("I'm in getInventoryType()");
+		MongoDatabase db = mongoClient.getDatabase("serverPersistant");
+		MongoCollection<Document> mc = db.getCollection("inventoryType");
+	
+		
+		for(Document doc : mc.find()){
+			Double sz = (Double) doc.get("size")+1;
+			int size = sz.intValue();
+			System.out.println(size);
+			
+			for(int i = 1; i <= size; i++){
+				String index = "" + i;
+				System.out.printf("\t%-10s\n", index + ". " + doc.get(index));
+			}
+		}
+			
+		
+			
+//		{
+//			String index = index.toString();
+//			//System.out.println(index);
+//			System.out.println(index + ". " + doc.get(index));
+//			index++;
+//		}
+		
+}
 //	public boolean databaseValidate(MongoClient mongoClient, String db){
 //	
 //		
